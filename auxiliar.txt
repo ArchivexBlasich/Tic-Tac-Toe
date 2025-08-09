@@ -1,0 +1,82 @@
+/*     const dialogPlayer1 = document.querySelector("[data-player='player1']");
+    const dialogPlayer2 = document.querySelector("[data-player='player2']");
+    const player1 = document.querySelector(".player1");
+    const player2 = document.querySelector(".player2"); */
+
+
+
+/*         setPlayerNames(dialogPlayer2);
+        setPlayerNames(dialogPlayer1); */
+
+
+/*     function setPlayerNames(dialog) {
+        dialog.showModal();
+
+        let dialogContainer = dialog.children[0];
+        let input = dialogContainer.children[1];
+        let btn = dialogContainer.children[2];
+
+
+        btn.addEventListener("click", () => {
+            if (input.value === "") return;
+
+            if (dialog.dataset.player === "player1") {
+                player1.children[0].textContent = input.value.toUpperCase();
+            } else {
+                player2.children[0].textContent = input.value.toUpperCase();
+            }
+            dialog.close();
+        });
+    } */
+
+
+
+
+dialog {
+    margin: auto;
+    min-height: 30vh;
+    min-width: 30vh;
+    background-color: var(--bg-color);
+    border: 2px solid var(--shadow-color);
+}
+
+.dialog-container {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+dialog::backdrop {
+    backdrop-filter: blur(10px);
+}
+
+.dialog-container label {
+    font-size: 1.5rem;
+    color: var(--player1-color);
+}
+
+.dialog-container button,
+.dialog-container input {
+    outline: none;
+    border: 2px solid var(--player1-color);
+    background-color: var(--tik-tac-toe--bgcolor);
+    color: var(--player1-color);
+    font-size: 1.5rem;
+}
+
+.dialog-container button {
+    padding: 0.5em 1em;
+}
+
+
+
+
+            <dialog data-player="player1">
+                <div class="dialog-container">
+                    <label for="player-name">Player 1</label>
+                    <input type="text" id="player-name" name="player-name">
+                    <button type="button">Next</button>
+                </div>
+            </dialog>

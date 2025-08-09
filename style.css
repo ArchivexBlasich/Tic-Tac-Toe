@@ -85,6 +85,44 @@ button:focus {
     border: 3px solid var(--shadow-color);
 }
 
+dialog {
+    margin: auto;
+    min-height: 30vh;
+    min-width: 30vh;
+    background-color: var(--bg-color);
+    border: 2px solid var(--shadow-color);
+}
+
+.dialog-container {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+dialog::backdrop {
+    backdrop-filter: blur(10px);
+}
+
+.dialog-container label {
+    font-size: 1.5rem;
+    color: var(--player1-color);
+}
+
+.dialog-container button,
+.dialog-container input {
+    outline: none;
+    border: 2px solid var(--player1-color);
+    background-color: var(--tik-tac-toe--bgcolor);
+    color: var(--player1-color);
+    font-size: 1.5rem;
+}
+
+.dialog-container button {
+    padding: 0.5em 1em;
+}
+
 .main-container {
     min-height: 100vh;
     display: flex;

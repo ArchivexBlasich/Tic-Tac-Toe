@@ -99,9 +99,9 @@ function gameController() {
     };
 
     // bind events
-    events.on("cellPress", selectCell)
+    events.on("cellPress", selectCell);
 
-    function selectCell({ row, column }) {
+    function selectCell({ row, column, }) {
         if (winner !== "") {
             return;
         }
@@ -183,10 +183,6 @@ function gameController() {
         board.resetBoard();
     };
 
-    return {
-        selectCell,
-        newGame,
-    };
 }
 
 function cell() {
@@ -217,11 +213,15 @@ function cell() {
 }
 
 function ScreenController() {
+    gameController();
     const buttons = document.querySelectorAll(".board > button");
-    const dialog = document.querySelector("dialog");
+    const dialogPlayer1 = document.querySelector("[data-player='player1']");
+    const dialogPlayer2 = document.querySelector("[data-player='player2']");
+    const player1 = document.querySelector(".player1");
+    const player2 = document.querySelector(".player2");
 
     // bind Event
-    events.on("setBoardCell", render)
+    events.on("setBoardCell", render);
 
     // Functions
     function init() {
@@ -234,6 +234,9 @@ function ScreenController() {
                 index++;
             }
         }
+
+        setPlayerNames(dialogPlayer2);
+        setPlayerNames(dialogPlayer1);
     };
 
     function render({ row, column, player }) {
@@ -243,11 +246,31 @@ function ScreenController() {
                 btn.classList.add(`${player.name}`);
             }
         });
-    }
+    };
 
     function cellPress(e) {
         events.emit('cellPress', { row: e.target.dataset.row, column: e.target.dataset.column, })
-    }
+    };
+
+    function setPlayerNames(dialog) {
+        dialog.showModal();
+
+        let dialogContainer = dialog.children[0];
+        let input = dialogContainer.children[1];
+        let btn = dialogContainer.children[2];
+
+
+        btn.addEventListener("click", () => {
+            if (input.value === "") return;
+
+            if (dialog.dataset.player === "player1") {
+                player1.children[0].textContent = input.value.toUpperCase();
+            } else {
+                player2.children[0].textContent = input.value.toUpperCase();
+            }
+            dialog.close();
+        });
+    };
 
     init();
 
