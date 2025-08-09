@@ -86,13 +86,14 @@ function gameController() {
     const player1 = {
         name: "player1",
         mark: "O",
+        points: 0,
     };
     const player2 = {
         name: "player2",
         mark: "X",
+        points: 0,
     };
     let playerTurn = (Math.round(Math.random()) === 0) ? player1 : player2;
-    let winner = "";
 
     function toggleTurn() {
         playerTurn = (playerTurn === player2) ? player1 : player2;
@@ -100,11 +101,9 @@ function gameController() {
 
     // bind events
     events.on("cellPress", selectCell);
+    events.on("restartGame", newGame);
 
     function selectCell({ row, column, }) {
-        if (winner !== "") {
-            return;
-        }
 
         let boardSize = board.getBoardSize()
         if (Math.abs(row) > boardSize || Math.abs(column) > boardSize) {
@@ -120,7 +119,15 @@ function gameController() {
 
         if (thereIsWinner()) {
             console.log(`${playerTurn.name} with ${playerTurn.mark} Win the game`);
-            winner = playerTurn;
+            if (playerTurn.name === "player1") {
+                player1.points++;
+                events.emit("winner", player1);
+            } else {
+                player2.points++;
+                events.emit("winner", player2);
+            }
+
+            newGame();
         } else {
             toggleTurn();
         }
@@ -178,8 +185,6 @@ function gameController() {
     };
 
     function newGame() {
-        winner = "";
-        playerTurn = (Math.round(Math.random()) === 0) ? player1 : player2;
         board.resetBoard();
     };
 
@@ -217,6 +222,10 @@ function ScreenController() {
     const buttons = document.querySelectorAll(".board > button");
 
     const startBtn = document.querySelector(".start-btn");
+    const restartBtn = document.querySelector(".restart-btn");
+
+    const player1Result = document.querySelector("header .player1");
+    const player2Result = document.querySelector("header .player2");
 
     const dialogPlayer1 = document.querySelector("[data-player='player1']");
     const dialogPlayer2 = document.querySelector("[data-player='player2']");
@@ -225,8 +234,10 @@ function ScreenController() {
 
     // bind Event
     events.on("setBoardCell", render);
+    events.on("winner", changeResult);
 
     startBtn.addEventListener("click", init);
+    restartBtn.addEventListener("click", restartGame);
 
     // Functions
     function init() {
@@ -278,6 +289,31 @@ function ScreenController() {
 
         dialog.showModal();
     };
+
+    function changeResult({ name, mark, points }) {
+        if (name === "player1") {
+            player1Result.textContent = "";
+            player1Result.textContent = `${points}`;
+        } else {
+            player2Result.textContent = "";
+            player2Result.textContent = `${points}`;
+        }
+
+        clearBoard();
+    }
+
+    function restartGame() {
+        clearBoard();
+
+        events.emit("restartGame")
+    }
+
+    function clearBoard() {
+        buttons.forEach((btn) => {
+            btn.textContent = "";
+            btn.className = "";
+        });
+    }
 }
 
 let game = ScreenController();
