@@ -1,0 +1,118 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+#root, #__next {
+  isolation: isolate;
+}
+
+/*------- Custom properties -------------*/
+:root {
+    --bg-color: #003840;
+    --tik-tac-toe-color: #007369;
+    --tik-tac-toe--bgcolor: #005A5B;
+    --player1-color: #9BF2EA;
+    --player2-color: #BF0A4C;
+    --shadow-color: #DAFDBA;
+}
+
+html,
+body {
+    background-color: var(--bg-color);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+    margin: 0 auto;
+}
+
+button {
+    font: inherit;
+    min-height: 5rem;
+    min-width: 5rem;
+    border: 3px solid var(--tik-tac-toe-color);
+    background: var(--tik-tac-toe--bgcolor);
+}
+
+button:hover {
+    background-color: #9AEBA3;
+    border: 3px solid var(--shadow-color);
+}
+
+button:focus {
+    outline: none;
+    border: 3px solid var(--shadow-color);
+}
+
+.main-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.board:hover {
+    box-shadow: var(--shadow-color) 0px 4px 12px;
+}
+
+.player1,
+.player2 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    font-size: 1.5rem;
+}
+
+.player1 {
+    color: var(--player1-color);
+}
+
+.player2 {
+    color: var(--player2-color);
+}
