@@ -62,6 +62,15 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-content: center;
+}
+
 button {
     font: inherit;
     font-size: 1.3rem;
@@ -121,10 +130,43 @@ dialog::backdrop {
 
 .dialog-container button {
     padding: 0.5em 1em;
+    cursor: pointer;
+}
+
+header {
+    padding: 2rem;
+    margin-top: 4rem;
+    font-size: 6rem;
+    align-self: center;
+    display: flex;
+    gap: 5rem;
+}
+
+footer {
+    padding: 2rem;
+    align-self: center;
+    display: flex;
+
+    gap: 2rem;
+}
+
+footer button {
+    border: 2px solid var(--shadow-color);
+    border-radius: 15px;
+    color: var(--shadow-color);
+    padding: 0.7em 1.3em;
+}
+
+footer button:hover {
+    box-shadow: var(--shadow-color) 0px 4px 12px;
+}
+
+.start-btn:disabled {
+    background: grey;
 }
 
 .main-container {
-    min-height: 100vh;
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;

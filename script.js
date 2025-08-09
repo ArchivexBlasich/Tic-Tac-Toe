@@ -215,13 +215,18 @@ function cell() {
 function ScreenController() {
     gameController();
     const buttons = document.querySelectorAll(".board > button");
+
+    const startBtn = document.querySelector(".start-btn");
+
     const dialogPlayer1 = document.querySelector("[data-player='player1']");
     const dialogPlayer2 = document.querySelector("[data-player='player2']");
-    const player1 = document.querySelector(".player1");
-    const player2 = document.querySelector(".player2");
+    const player1 = document.querySelector("section.player1");
+    const player2 = document.querySelector("section.player2");
 
     // bind Event
     events.on("setBoardCell", render);
+
+    startBtn.addEventListener("click", init);
 
     // Functions
     function init() {
@@ -237,6 +242,8 @@ function ScreenController() {
 
         setPlayerNames(dialogPlayer2);
         setPlayerNames(dialogPlayer1);
+
+        startBtn.disabled = true;
     };
 
     function render({ row, column, player }) {
@@ -253,12 +260,9 @@ function ScreenController() {
     };
 
     function setPlayerNames(dialog) {
-        dialog.showModal();
-
         let dialogContainer = dialog.children[0];
         let input = dialogContainer.children[1];
         let btn = dialogContainer.children[2];
-
 
         btn.addEventListener("click", () => {
             if (input.value === "") return;
@@ -268,13 +272,12 @@ function ScreenController() {
             } else {
                 player2.children[0].textContent = input.value.toUpperCase();
             }
+
             dialog.close();
         });
+
+        dialog.showModal();
     };
-
-    init();
-
-    return;
 }
 
 let game = ScreenController();
