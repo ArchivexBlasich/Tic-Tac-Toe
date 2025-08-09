@@ -1,3 +1,28 @@
+let events = {
+    events: {},
+    on: function (eventName, fn) {
+        this.events[eventName] = this.events[eventName] || [];
+        this.events[eventName].push(fn);
+    },
+    off: function (eventName, fn) {
+        if (this.events[eventName]) {
+            for (var i = 0; i < this.events[eventName].length; i++) {
+                if (this.events[eventName][i] === fn) {
+                    this.events[eventName].splice(i, 1);
+                    break;
+                }
+            };
+        }
+    },
+    emit: function (eventName, data) {
+        if (this.events[eventName]) {
+            this.events[eventName].forEach(function (fn) {
+                fn(data);
+            });
+        }
+    }
+};
+
 function gameBoard() {
     const rows = 3;
     const columns = 3;
@@ -27,6 +52,7 @@ function gameBoard() {
         return rows;
     };
 
+    // This function is just for test functionality reasons
     function printBoard() {
         for (let i = 0; i < rows; i++) {
             console.log(`${board[i][0].getCellMark()} `,
@@ -51,7 +77,6 @@ function gameBoard() {
         setBoardCell,
         getBoardCell,
         getBoardSize,
-        printBoard,
         resetBoard,
     }
 };
@@ -60,11 +85,11 @@ function gameController() {
     const board = gameBoard();
     const player1 = {
         name: "player1",
-        mark: "X",
+        mark: "O",
     };
     const player2 = {
         name: "player2",
-        mark: "O",
+        mark: "X",
     };
     let playerTurn = (Math.round(Math.random()) === 0) ? player1 : player2;
     let winner = "";
@@ -73,7 +98,10 @@ function gameController() {
         playerTurn = (playerTurn === player2) ? player1 : player2;
     };
 
-    function selectCell(row, column) {
+    // bind events
+    events.on("cellPress", selectCell)
+
+    function selectCell({ row, column }) {
         if (winner !== "") {
             return;
         }
@@ -87,6 +115,8 @@ function gameController() {
         if (board.setBoardCell(row, column, playerTurn.mark) === "CellNotEmpty") {
             return;
         }
+
+        events.emit("setBoardCell", { row: row, column: column, player: playerTurn });
 
         if (thereIsWinner()) {
             console.log(`${playerTurn.name} with ${playerTurn.mark} Win the game`);
@@ -156,7 +186,6 @@ function gameController() {
     return {
         selectCell,
         newGame,
-        board,
     };
 }
 
@@ -187,4 +216,42 @@ function cell() {
     };
 }
 
-let game = gameController();
+function ScreenController() {
+    const buttons = document.querySelectorAll(".board > button");
+    const dialog = document.querySelector("dialog");
+
+    // bind Event
+    events.on("setBoardCell", render)
+
+    // Functions
+    function init() {
+        let index = 0;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                buttons[index].setAttribute('data-row', `${i}`);
+                buttons[index].setAttribute('data-column', `${j}`);
+                buttons[index].addEventListener("click", cellPress);
+                index++;
+            }
+        }
+    };
+
+    function render({ row, column, player }) {
+        buttons.forEach((btn) => {
+            if (btn.dataset.row === row && btn.dataset.column === column) {
+                btn.textContent = player.mark;
+                btn.classList.add(`${player.name}`);
+            }
+        });
+    }
+
+    function cellPress(e) {
+        events.emit('cellPress', { row: e.target.dataset.row, column: e.target.dataset.column, })
+    }
+
+    init();
+
+    return;
+}
+
+let game = ScreenController();

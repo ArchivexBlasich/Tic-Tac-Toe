@@ -52,7 +52,7 @@ h1, h2, h3, h4, h5, h6 {
     --tik-tac-toe-color: #007369;
     --tik-tac-toe--bgcolor: #005A5B;
     --player1-color: #9BF2EA;
-    --player2-color: #BF0A4C;
+    --player2-color: #DBF227;
     --shadow-color: #DAFDBA;
 }
 
@@ -60,20 +60,23 @@ html,
 body {
     background-color: var(--bg-color);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
-    margin: 0 auto;
 }
 
 button {
     font: inherit;
+    font-size: 1.3rem;
     min-height: 5rem;
     min-width: 5rem;
     border: 3px solid var(--tik-tac-toe-color);
     background: var(--tik-tac-toe--bgcolor);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 button:hover {
-    background-color: #9AEBA3;
+    background-color: #005C53;
     border: 3px solid var(--shadow-color);
 }
 
